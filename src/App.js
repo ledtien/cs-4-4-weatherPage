@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Spinner, Navbar, Nav, Card } from "react-bootstrap";
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 function WeatherNav() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -26,7 +28,7 @@ function App() {
   const [weather, setWeather] = useState(null);
   const getWeatherByCurrentLocation = async (lat, lon) => {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=abe2b01c353d56d9eb7e6c59bb996bc7`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=${API_KEY}`
     );
     const json = await response.json();
     setWeather(json);
