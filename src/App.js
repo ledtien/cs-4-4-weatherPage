@@ -2,7 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Spinner, Navbar, Nav, Card } from "react-bootstrap";
+import { Spinner, Navbar, Nav, Card, Button } from "react-bootstrap";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -11,21 +11,44 @@ function WeatherNav() {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand href="#home">Weather</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="#vietnam">Vietnam</Nav.Link>
-          <Nav.Link href="#japan">Japan</Nav.Link>
-          <Nav.Link href="#singapore">Singapore</Nav.Link>
-          <Nav.Link href="#us">US</Nav.Link>
-          <Nav.Link href="#uk">UK</Nav.Link>
-          <Nav.Link href="#korea">Korea</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
+      <Navbar.Collapse id="responsive-navbar-nav"></Navbar.Collapse>
     </Navbar>
   );
 }
 function App() {
   const [weather, setWeather] = useState(null);
+  const cities = [
+    {
+      lat: "21.0278",
+      lon: "105.8342",
+      name: "Ha Noi",
+    },
+    {
+      lat: "35.6762",
+      lon: "139.6503",
+      name: "Tokyo",
+    },
+    {
+      lat: "40.7128",
+      lon: "74.0060",
+      name: "New York City",
+    },
+    {
+      lat: "37.5665",
+      lon: "126.9780",
+      name: "Seoul",
+    },
+    {
+      lat: "48.8566",
+      lon: "2.3522",
+      name: "Paris",
+    },
+    {
+      lat: "45.4215",
+      lon: "75.6972",
+      name: "Ottawa",
+    },
+  ];
   const getWeatherByCurrentLocation = async (lat, lon) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=${API_KEY}`
@@ -67,8 +90,8 @@ function App() {
         ? (((weather.main.temp - 273.15) * 9) / 5 + 32).toFixed(2)
         : "";
     return (
-      <Card className="bg-dark text-white main-content">
-        <Card.ImgOverlay className="d-flex flex-column justify-content-center text-center">
+      <Card className="bg-dark text-black main-content">
+        <Card.ImgOverlay className="d-flex flex-column justify-content-center text-center m-5">
           <Card.Title>{weather?.name}</Card.Title>
           <Card.Text className="text-success h1">
             {`${temperatureC} °C / ${temperatureF} °F`}
@@ -84,6 +107,13 @@ function App() {
   return (
     <div className="App">
       <WeatherNav />
+      <div className="m-1">
+        {cities.map((c) => {
+          <Button
+            onClick={() => getWeatherByCurrentLocation(c.lat, c.lon)}
+          ></Button>;
+        })}
+      </div>
       <div className="container mt-5">
         <WeatherInfo weather={weather} />
       </div>
