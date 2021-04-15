@@ -2,7 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Spinner, Container, Table, Navbar, Nav, Card } from "react-bootstrap";
+import { Spinner, Navbar, Nav, Card } from "react-bootstrap";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -26,7 +26,6 @@ function WeatherNav() {
 }
 function App() {
   const [weather, setWeather] = useState(null);
-  const [country, setCountry] = useState("Vietnam");
   const getWeatherByCurrentLocation = async (lat, lon) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=${API_KEY}`
@@ -86,7 +85,6 @@ function App() {
     <div className="App">
       <WeatherNav />
       <div className="container mt-5">
-        {/* <WeatherTable country={"Vietnam"} /> */}
         <WeatherInfo weather={weather} />
       </div>
     </div>
