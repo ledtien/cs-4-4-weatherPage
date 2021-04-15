@@ -2,9 +2,49 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Spinner, Navbar, Nav, Card, Button } from "react-bootstrap";
+import { Spinner, Navbar, Card, Button } from "react-bootstrap";
+import { createApi } from "unsplash-js";
+
+const unsplash = createApi({
+  accessKey: process.env.REACT_APP_UNSPLASH_KEY,
+  // `fetch` options to be sent with every request
+  headers: { "X-Custom-Header": "foo" },
+});
+console.log({ unsplash });
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const cities = [
+  {
+    lat: "21.0278",
+    lon: "105.8342",
+    name: "Ha Noi",
+  },
+  {
+    lat: "35.6828",
+    lon: "139.7686",
+    name: "Tokyo",
+  },
+  {
+    lat: "40.7128",
+    lon: "-74.0060",
+    name: "New York City",
+  },
+  {
+    lat: "37.5665",
+    lon: "126.9780",
+    name: "Seoul",
+  },
+  {
+    lat: "48.8566",
+    lon: "2.3522",
+    name: "Paris",
+  },
+  {
+    lat: "45.4215",
+    lon: "-75.6972",
+    name: "Ottawa",
+  },
+];
 
 function WeatherNav() {
   return (
@@ -17,38 +57,7 @@ function WeatherNav() {
 }
 function App() {
   const [weather, setWeather] = useState(null);
-  const cities = [
-    {
-      lat: "21.0278",
-      lon: "105.8342",
-      name: "Ha Noi",
-    },
-    {
-      lat: "35.6762",
-      lon: "139.6503",
-      name: "Tokyo",
-    },
-    {
-      lat: "40.7128",
-      lon: "74.0060",
-      name: "New York City",
-    },
-    {
-      lat: "37.5665",
-      lon: "126.9780",
-      name: "Seoul",
-    },
-    {
-      lat: "48.8566",
-      lon: "2.3522",
-      name: "Paris",
-    },
-    {
-      lat: "45.4215",
-      lon: "75.6972",
-      name: "Ottawa",
-    },
-  ];
+
   const getWeatherByCurrentLocation = async (lat, lon) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&exclude={part}&appid=${API_KEY}`
@@ -107,11 +116,16 @@ function App() {
   return (
     <div className="App">
       <WeatherNav />
-      <div className="m-1">
+      <div className="m-3">
         {cities.map((c) => {
-          <Button
-            onClick={() => getWeatherByCurrentLocation(c.lat, c.lon)}
-          ></Button>;
+          return (
+            <Button
+              class="m-2"
+              onClick={() => getWeatherByCurrentLocation(c.lat, c.lon)}
+            >
+              {c.name}
+            </Button>
+          );
         })}
       </div>
       <div className="container mt-5">
